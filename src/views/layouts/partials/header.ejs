@@ -1,0 +1,25 @@
+<header class="ornate-panel mb-8">
+  <div class="flex justify-between items-center p-4 border-b border-slate-800/50">
+    <a href="/" class="font-fantasy text-3xl md:text-4xl font-bold text-amber-400">A Lenda de Chronos</a>
+    <div class="hidden md:flex items-center space-x-4">
+      <% if (currentUser) { %>
+        <span class="text-slate-300">Olá, <%= currentUser.username %></span>
+        <form action="/minha-conta/logout" method="post">
+          <button class="text-slate-300 hover:text-white">Sair</button>
+        </form>
+      <% } else { %>
+        <a href="/minha-conta/login" class="text-slate-300 hover:text-white">Minha Conta</a>
+      <% } %>
+      <a href="/suporte" class="text-slate-300 hover:text-white">Suporte</a>
+      <a href="/comunidade" class="bg-violet-700 hover:bg-violet-600 text-white font-bold py-2 px-4 rounded-md">Comunidade</a>
+    </div>
+  </div>
+  <nav class="flex justify-center flex-wrap">
+    <a href="/noticias" class="nav-link">Notícias</a>
+    <a href="/cronicas" class="nav-link">Crônicas</a>
+    <a href="/rankings" class="nav-link">Rankings</a>
+    <a href="/loja" class="nav-link">Loja</a>
+    <a href="/galeria" class="nav-link">Galeria</a>
+    <a href="/minha-conta" class="nav-link">Minha Conta</a>
+  </nav>
+</header>

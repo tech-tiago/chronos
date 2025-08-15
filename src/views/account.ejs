@@ -1,0 +1,40 @@
+<% layout('layouts/main') %>
+<div class="lg:col-span-12">
+  <% if (tab==='login') { %>
+    <div class="ornate-panel max-w-md mx-auto">
+      <div class="ornate-header"><h3>Entrar</h3></div>
+      <form action="/minha-conta/login" method="post" class="p-6 space-y-3">
+        <input name="username" class="w-full bg-slate-900/70 border border-slate-700 rounded px-3 py-2" placeholder="Usuário">
+        <input type="password" name="password" class="w-full bg-slate-900/70 border border-slate-700 rounded px-3 py-2" placeholder="Senha">
+        <button class="w-full bg-violet-700 hover:bg-violet-600 text-white font-bold py-2 rounded">Entrar</button>
+      </form>
+      <div class="p-4 text-center text-slate-400 text-sm">Não tem conta? <a class="text-amber-400" href="/minha-conta/registrar">Registrar</a></div>
+    </div>
+  <% } else if (tab==='register') { %>
+    <div class="ornate-panel max-w-md mx-auto">
+      <div class="ornate-header"><h3>Registrar</h3></div>
+      <form action="/minha-conta/registrar" method="post" class="p-6 space-y-3">
+        <input name="username" class="w-full bg-slate-900/70 border border-slate-700 rounded px-3 py-2" placeholder="Usuário">
+        <input type="email" name="email" class="w-full bg-slate-900/70 border border-slate-700 rounded px-3 py-2" placeholder="Email">
+        <input type="password" name="password" class="w-full bg-slate-900/70 border border-slate-700 rounded px-3 py-2" placeholder="Senha">
+        <button class="w-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold py-2 rounded">Criar Conta</button>
+      </form>
+    </div>
+  <% } else { %>
+    <div class="ornate-panel">
+      <div class="ornate-header"><h3>Painel</h3></div>
+      <div class="p-6">
+        <h4 class="font-bold text-white mb-3">Seus Personagens</h4>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <% (chars||[]).forEach(ch => { %>
+            <div class="bg-slate-900/40 p-4 rounded">
+              <p class="font-bold text-amber-400"><%= ch.nome %> — Lv <%= ch.level %></p>
+              <p class="text-sm text-slate-300"><%= ch.classe %> <% if (ch.guilda) { %> | Guilda: [<%= ch.guilda %>] <% } %></p>
+              <p class="text-xs text-slate-400">PvP: <%= ch.pvp_kills %> | PvE: <%= ch.pve_score %></p>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+  <% } %>
+</div>

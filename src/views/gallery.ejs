@@ -1,0 +1,12 @@
+<% layout('layouts/main') %>
+<div class="lg:col-span-12 ornate-panel">
+  <div class="ornate-header"><h3>Galeria</h3></div>
+  <div class="p-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+    <% (items || []).forEach(g => { %>
+      <a class="group">
+        <img src="<%= g.imagem_url %>" class="w-full h-48 object-cover rounded-lg transition-transform group-hover:scale-105"/>
+        <div class="mt-2 text-slate-300 text-sm"><%= g.titulo %></div>
+      </a>
+    <% }) %>
+  </div>
+</div>

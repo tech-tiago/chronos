@@ -1,0 +1,16 @@
+<% layout('layouts/main') %>
+<div class="lg:col-span-12 ornate-panel">
+  <div class="ornate-header"><h3><%= title %></h3></div>
+  <div class="p-6 grid md:grid-cols-3 gap-6">
+    <% (items || []).forEach(n => { %>
+      <article class="col-span-1 rounded-lg overflow-hidden bg-slate-900/30">
+        <img src="<%= n.imagem_url || 'https://placehold.co/800x500' %>" class="w-full h-48 object-cover"/>
+        <div class="p-4">
+          <h4 class="font-bold text-white"><%= n.titulo %></h4>
+          <p class="text-xs text-slate-400"><%= new Date(n.data_publicacao).toLocaleDateString('pt-BR') %> — <%= n.categoria || 'Geral' %></p>
+          <p class="text-slate-300 mt-2"><%= n.resumo || (n.conteudo || '').slice(0,120) %>...</p>
+        </div>
+      </article>
+    <% }) %>
+  </div>
+</div>

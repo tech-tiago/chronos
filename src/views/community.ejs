@@ -1,0 +1,36 @@
+<% layout('layouts/main') %>
+<div class="lg:col-span-12">
+  <section class="ornate-panel">
+    <div class="ornate-header"><h3><%= title || 'Comunidade' %></h3></div>
+    <div class="p-6 grid md:grid-cols-3 gap-6">
+      <% (posts || []).forEach(p => { %>
+        <article class="col-span-1 rounded-lg overflow-hidden bg-slate-900/30">
+          <img src="<%= p.imagem_url || 'https://placehold.co/800x400' %>" class="w-full h-48 object-cover"/>
+          <div class="p-4">
+            <h4 class="font-bold text-white"><a href="/comunidade/<%= p.id %>" class="hover:text-amber-400"><%= p.titulo %></a></h4>
+            <p class="text-xs text-slate-400"><%= new Date(p.publicado_em).toLocaleDateString('pt-BR') %> — <%= p.autor %></p>
+            <p class="mt-2 text-slate-300"><%= (p.conteudo || '').slice(0,160) %>...</p>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  </section>
+
+  <% if (comments) { %>
+  <section class="ornate-panel mt-6">
+    <div class="ornate-header"><h4>Comentários</h4></div>
+    <div class="p-6 space-y-4">
+      <% comments.forEach(c => { %>
+        <div class="bg-slate-900/40 p-3 rounded">
+          <p class="text-sm text-slate-300"><strong><%= c.autor %></strong> — <%= new Date(c.publicado_em).toLocaleString('pt-BR') %></p>
+          <p class="text-slate-200"><%= c.mensagem %></p>
+        </div>
+      <% }) %>
+      <form method="post">
+        <textarea name="mensagem" rows="3" class="w-full bg-slate-900/70 border border-slate-700 rounded p-2 text-sm" placeholder="Deixe um comentário..."></textarea>
+        <button class="mt-2 bg-violet-700 hover:bg-violet-600 text-white font-bold py-2 px-4 rounded">Enviar</button>
+      </form>
+    </div>
+  </section>
+  <% } %>
+</div>

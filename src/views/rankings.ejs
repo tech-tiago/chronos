@@ -1,0 +1,47 @@
+<% layout('layouts/main') %>
+<div class="lg:col-span-12 grid lg:grid-cols-3 gap-6">
+  <section class="ornate-panel">
+    <div class="ornate-header"><h4>Top Heróis (PvE)</h4></div>
+    <ul class="p-4 space-y-3 text-sm">
+      <% heroes.forEach((h,i)=>{ %>
+        <li class="flex items-center">
+          <span class="w-8 text-center <%= i===0?'rank-icon-gold':i===1?'rank-icon-silver':i===2?'rank-icon-bronze':'text-slate-500' %>"><i data-feather="award" class="w-5 h-5 inline-block"></i></span>
+          <div class="flex-1">
+            <p class="font-bold text-white"><%= h.nome %> (Lv <%= h.level %>)</p>
+            <p class="text-xs text-slate-400"><%= h.classe %> — PvE: <%= h.pve_score %></p>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  </section>
+
+  <section class="ornate-panel">
+    <div class="ornate-header"><h4>Top PvP</h4></div>
+    <ul class="p-4 space-y-3 text-sm">
+      <% pvp.forEach((h,i)=>{ %>
+        <li class="flex items-center">
+          <span class="w-8 text-center <%= i===0?'rank-icon-gold':i===1?'rank-icon-silver':i===2?'rank-icon-bronze':'text-slate-500' %>"><i data-feather="target" class="w-5 h-5 inline-block"></i></span>
+          <div class="flex-1">
+            <p class="font-bold text-white"><%= h.nome %> (Lv <%= h.level %>)</p>
+            <p class="text-xs text-slate-400"><%= h.classe %> — Kills: <%= h.pvp_kills %></p>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  </section>
+
+  <section class="ornate-panel">
+    <div class="ornate-header"><h4>Guildas</h4></div>
+    <ul class="p-4 space-y-3 text-sm">
+      <% guilds.forEach((g,i)=>{ %>
+        <li class="flex items-center">
+          <span class="w-8 text-center <%= i===0?'rank-icon-gold':i===1?'rank-icon-silver':i===2?'rank-icon-bronze':'text-slate-500' %>"><i data-feather="shield" class="w-5 h-5 inline-block"></i></span>
+          <div class="flex-1">
+            <p class="font-bold text-white">[<%= g.guilda %>]</p>
+            <p class="text-xs text-slate-400">Membros: <%= g.membros %> — Poder: <%= g.poder %></p>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  </section>
+</div>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title><%= title || 'A Lenda de Chronos' %></title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/feather-icons"></script>
+<style>
+:root {
+  --color-bg-dark:#06050a; --color-bg-light:#100e19;
+  --color-panel:rgba(18,16,29,.9); --color-panel-header:rgba(10,8,16,.95);
+  --color-border:#2a2245; --color-purple:#a78bfa; --color-gold:#facc15;
+  --color-text:#e5e7eb; --color-text-dim:#9ca3af;
+}
+body{ font-family:'Inter',sans-serif; background-color:var(--color-bg-dark);
+  background-image:url('https://placehold.co/1920x1080/06050a/1f1b2d.png?text=Chronos+Dark+Vista'),
+  linear-gradient(to bottom,var(--color-bg-dark),var(--color-bg-light));
+  background-size:cover; background-position:center; background-attachment:fixed; color:var(--color-text);}
+.font-fantasy{font-family:'MedievalSharp',cursive;}
+.ornate-panel{ background:var(--color-panel); border:1px solid var(--color-border); backdrop-filter:blur(16px); border-radius:.5rem; box-shadow:0 10px 30px rgba(0,0,0,.3);}
+.ornate-header{ background:linear-gradient(to right,var(--color-panel-header),transparent); border-bottom:1px solid var(--color-border); padding:.75rem 1.5rem; text-transform:uppercase; letter-spacing:.1em; font-weight:bold; color:var(--color-purple); text-shadow:0 0 8px var(--color-purple); position:relative;}
+.ornate-header::before{content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background-color:var(--color-gold); box-shadow:0 0 10px var(--color-gold); border-radius:4px 0 0 4px;}
+.nav-link{ padding:1rem 1.25rem; text-transform:uppercase; font-weight:700; color:var(--color-text-dim); transition:.3s; border-bottom:4px solid transparent;}
+.nav-link:hover,.nav-link.active{ color:var(--color-gold); background:linear-gradient(to top, rgba(250,204,21,.1), transparent); border-bottom-color:var(--color-gold);}
+.tab-link{ transition:.3s; border-bottom:2px solid transparent; padding-bottom:.5rem; }
+.tab-link.active{ color:var(--color-gold); border-bottom-color:var(--color-gold);}
+.tab-content{ display:none;} .tab-content.active{ display:block;}
+.rank-icon-gold{ color:var(--color-gold);} .rank-icon-silver{ color:#d1d5db;} .rank-icon-bronze{ color:#a16f4a;}
+</style>
+</head>
+<body>
+<div class="container mx-auto px-4 lg:px-6 py-4">
+  <% include ./partials/header %>
+  <% if (success && success.length) { %><div class="ornate-panel p-3 mb-4 text-green-300"><%= success %></div><% } %>
+  <% if (error && error.length) { %><div class="ornate-panel p-3 mb-4 text-red-300"><%= error %></div><% } %>
+  <main class="grid lg:grid-cols-12 gap-8">
+    <%- body %>
+  </main>
+  <% include ./partials/footer %>
+</div>
+<script>feather.replace();</script>
+</body>
+</html>

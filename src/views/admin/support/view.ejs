@@ -1,0 +1,29 @@
+<div class="bg-white p-6 rounded-lg shadow-md mb-6">
+    <h3 class="text-xl font-bold mb-2">Detalhes do Ticket</h3>
+    <p><strong>Usuário:</strong> <%= ticket.username %></p>
+    <p><strong>Assunto:</strong> <%= ticket.assunto %></p>
+    <p><strong>Status:</strong> <span class="font-bold <%= ticket.status === 'Aberto' ? 'text-red-600' : 'text-green-600' %>"><%= ticket.status %></span></p>
+    <hr class="my-4">
+    <p><strong>Mensagem do Usuário:</strong></p>
+    <p class="bg-gray-100 p-4 rounded"><%= ticket.mensagem %></p>
+</div>
+
+<% if (ticket.status === 'Aberto') { %>
+<div class="bg-white p-6 rounded-lg shadow-md">
+    <h3 class="text-xl font-bold mb-2">Responder Ticket</h3>
+    <form action="/admin/suporte/<%= ticket.id %>/responder" method="POST">
+        <div class="mb-4">
+            <label for="admin_response" class="block text-gray-700 font-bold mb-2">Sua Resposta:</label>
+            <textarea id="admin_response" name="admin_response" rows="8" class="w-full border rounded p-2" required></textarea>
+        </div>
+        <button type="submit" class="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700">
+            Enviar Resposta e Fechar Ticket
+        </button>
+    </form>
+</div>
+<% } else { %>
+<div class="bg-white p-6 rounded-lg shadow-md">
+    <h3 class="text-xl font-bold mb-2">Resposta Enviada</h3>
+    <p class="bg-blue-100 p-4 rounded"><%= ticket.admin_response %></p>
+</div>
+<% } %>

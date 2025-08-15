@@ -1,0 +1,36 @@
+<div class="bg-white p-6 rounded-lg shadow-md">
+    <table class="w-full text-left">
+        <thead>
+            <tr class="border-b">
+                <th class="py-2">ID</th>
+                <th>Assunto</th>
+                <th>Usuário</th>
+                <th>Status</th>
+                <th>Data</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% (tickets || []).forEach(ticket => { %>
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="py-3 font-mono">#<%= ticket.id %></td>
+                    <td><%= ticket.assunto %></td>
+                    <td><%= ticket.username || 'N/A' %></td>
+                    <td>
+                        <% if (ticket.status === 'Aberto') { %>
+                            <span class="bg-red-200 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Aberto</span>
+                        <% } else { %>
+                            <span class="bg-green-200 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full"><%= ticket.status %></span>
+                        <% } %>
+                    </td>
+                    <td><%= new Date(ticket.criado_em).toLocaleString('pt-BR') %></td>
+                    <td>
+                        <a href="/admin/suporte/<%= ticket.id %>" class="text-blue-600 hover:underline mr-4">
+                            Ver / Responder
+                        </a>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>

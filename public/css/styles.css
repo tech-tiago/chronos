@@ -1,0 +1,111 @@
+/* Variáveis de Cores e Tema */
+:root {
+  --color-bg-dark: #06050a;
+  --color-bg-light: #100e19;
+  --color-panel: rgba(18, 16, 29, 0.9);
+  --color-panel-header: rgba(10, 8, 16, 0.95);
+  --color-border: #2a2245;
+  --color-purple: #a78bfa;
+  --color-gold: #facc15;
+  --color-text: #e5e7eb;
+  --color-text-dim: #9ca3af;
+}
+
+/* Estilos Globais do Corpo da Página */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-bg-dark);
+  background-image: url('https://placehold.co/1920x1080/06050a/1f1b2d.png?text=Chronos+Dark+Vista'),
+    linear-gradient(to bottom, var(--color-bg-dark), var(--color-bg-light));
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: var(--color-text);
+}
+
+/* Utilitários de Fonte e Painel */
+.font-fantasy {
+  font-family: 'MedievalSharp', cursive;
+}
+
+.ornate-panel {
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  backdrop-filter: blur(16px);
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.ornate-header {
+  background: linear-gradient(to right, var(--color-panel-header), transparent);
+  border-bottom: 1px solid var(--color-border);
+  padding: 0.75rem 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: bold;
+  color: var(--color-purple);
+  text-shadow: 0 0 8px var(--color-purple);
+  position: relative;
+}
+
+.ornate-header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: var(--color-gold);
+  box-shadow: 0 0 10px var(--color-gold);
+  border-radius: 4px 0 0 4px;
+}
+
+/* Estilos de Navegação */
+.nav-link {
+  padding: 1rem 1.25rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--color-text-dim);
+  transition: 0.3s;
+  border-bottom: 4px solid transparent;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--color-gold);
+  background: linear-gradient(to top, rgba(250, 204, 21, 0.1), transparent);
+  border-bottom-color: var(--color-gold);
+}
+
+/* Estilos de Abas (Tabs) */
+.tab-link {
+  transition: 0.3s;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 0.5rem;
+}
+
+.tab-link.active {
+  color: var(--color-gold);
+  border-bottom-color: var(--color-gold);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Estilos para Ícones de Ranking */
+.rank-icon-gold {
+  color: var(--color-gold);
+}
+
+.rank-icon-silver {
+  color: #d1d5db;
+}
+
+.rank-icon-bronze {
+  color: #a16f4a;
+}

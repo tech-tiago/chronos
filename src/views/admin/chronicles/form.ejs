@@ -1,0 +1,37 @@
+<div class="bg-white p-6 rounded-lg shadow-md">
+    <form action="<%= (typeof chronicle.id !== 'undefined') ? '/admin/cronicas/' + chronicle.id + '/editar' : '/admin/cronicas/novo' %>" method="POST">
+        
+        <div class="mb-4">
+            <label for="titulo" class="block text-gray-700 font-bold mb-2">Título</label>
+            <input type="text" id="titulo" name="titulo" class="w-full border rounded p-2" value="<%= chronicle.titulo || '' %>" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="categoria" class="block text-gray-700 font-bold mb-2">Categoria</label>
+            <select id="categoria" name="categoria" class="w-full border rounded p-2" required>
+                <option value="Historia" <%= (chronicle.categoria === 'Historia') ? 'selected' : '' %>>História</option>
+                <option value="Classes" <%= (chronicle.categoria === 'Classes') ? 'selected' : '' %>>Classes</option>
+                <option value="Bestiario" <%= (chronicle.categoria === 'Bestiario') ? 'selected' : '' %>>Bestiário</option>
+                <option value="Cristais" <%= (chronicle.categoria === 'Cristais') ? 'selected' : '' %>>Cristais</option>
+                <option value="Forja" <%= (chronicle.categoria === 'Forja') ? 'selected' : '' %>>Forja</option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label for="conteudo" class="block text-gray-700 font-bold mb-2">Conteúdo Completo</label>
+            <textarea id="conteudo" name="conteudo" rows="10" class="w-full border rounded p-2"><%= chronicle.conteudo || '' %></textarea>
+        </div>
+
+        <div class="mb-4">
+            <label for="capa_url" class="block text-gray-700 font-bold mb-2">URL da Imagem de Capa</label>
+            <input type="text" id="capa_url" name="capa_url" class="w-full border rounded p-2" value="<%= chronicle.capa_url || '' %>">
+        </div>
+
+        <div>
+            <button type="submit" class="bg-green-600 text-white py-2 px-6 rounded-lg hover:bg-green-700">
+                <%= (typeof chronicle.id !== 'undefined') ? 'Salvar Alterações' : 'Criar Crônica' %>
+            </button>
+            <a href="/admin/cronicas" class="text-gray-600 ml-4 hover:underline">Cancelar</a>
+        </div>
+    </form>
+</div>

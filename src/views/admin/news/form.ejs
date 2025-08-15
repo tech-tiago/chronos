@@ -1,0 +1,36 @@
+<div class="bg-white p-6 rounded-lg shadow-md">
+    <form action="<%= (typeof news.id !== 'undefined') ? '/admin/noticias/' + news.id + '/editar' : '/admin/noticias/novo' %>" method="POST">
+        
+        <div class="mb-4">
+            <label for="titulo" class="block text-gray-700 font-bold mb-2">Título</label>
+            <input type="text" id="titulo" name="titulo" class="w-full border rounded p-2" value="<%= news.titulo || '' %>" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="resumo" class="block text-gray-700 font-bold mb-2">Resumo</label>
+            <textarea id="resumo" name="resumo" rows="3" class="w-full border rounded p-2"><%= news.resumo || '' %></textarea>
+        </div>
+
+        <div class="mb-4">
+            <label for="conteudo" class="block text-gray-700 font-bold mb-2">Conteúdo Completo</label>
+            <textarea id="conteudo" name="conteudo" rows="10" class="w-full border rounded p-2"><%= news.conteudo || '' %></textarea>
+        </div>
+
+        <div class="mb-4">
+            <label for="imagem_url" class="block text-gray-700 font-bold mb-2">URL da Imagem de Capa</label>
+            <input type="text" id="imagem_url" name="imagem_url" class="w-full border rounded p-2" value="<%= news.imagem_url || '' %>">
+        </div>
+
+        <div class="mb-4">
+            <label for="categoria" class="block text-gray-700 font-bold mb-2">Categoria</label>
+            <input type="text" id="categoria" name="categoria" class="w-full border rounded p-2" value="<%= news.categoria || '' %>">
+        </div>
+
+        <div>
+            <button type="submit" class="bg-green-600 text-white py-2 px-6 rounded-lg hover:bg-green-700">
+                <%= (typeof news.id !== 'undefined') ? 'Salvar Alterações' : 'Criar Notícia' %>
+            </button>
+            <a href="/admin/noticias" class="text-gray-600 ml-4 hover:underline">Cancelar</a>
+        </div>
+    </form>
+</div>

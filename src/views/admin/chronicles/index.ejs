@@ -1,0 +1,35 @@
+<div class="mb-6">
+    <a href="/admin/cronicas/novo" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
+        + Nova Crônica
+    </a>
+</div>
+
+<div class="bg-white p-6 rounded-lg shadow-md">
+    <table class="w-full text-left">
+        <thead>
+            <tr class="border-b">
+                <th class="py-2">ID</th>
+                <th>Título</th>
+                <th>Categoria</th>
+                <th>Data</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% chronicles.forEach(item => { %>
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="py-3"><%= item.id %></td>
+                    <td><%= item.titulo %></td>
+                    <td><%= item.categoria %></td>
+                    <td><%= new Date(item.publicado_em).toLocaleDateString('pt-BR') %></td>
+                    <td>
+                        <a href="/admin/cronicas/<%= item.id %>/editar" class="text-blue-600 hover:underline mr-4">Editar</a>
+                        <form action="/admin/cronicas/<%= item.id %>/deletar" method="POST" class="inline" onsubmit="return confirm('Tem certeza que deseja deletar esta crônica?');">
+                            <button type="submit" class="text-red-600 hover:underline">Deletar</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>

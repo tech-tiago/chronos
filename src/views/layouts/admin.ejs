@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> | Admin Chronos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen">
+        <aside class="w-64 bg-gray-800 text-white p-4">
+            <h1 class="text-2xl font-bold mb-8">Admin Chronos</h1>
+            <nav>
+                <ul>
+                    <li class="mb-4"><a href="/admin" class="hover:text-amber-400">Dashboard</a></li>
+                    <li class="mb-4"><a href="/admin/noticias" class="hover:text-amber-400">Notícias</a></li>
+                    <li class="mb-4"><a href="/admin/cronicas" class="hover:text-amber-400">Crônicas</a></li> <li class="mb-4"><a href="/admin/loja" class="hover:text-amber-400">Loja</a></li> <li class="mb-4"><a href="/admin/suporte" class="hover:text-amber-400">Suporte</a></li>
+                </ul>
+            </nav>
+            <div class="absolute bottom-4">
+                <a href="/" class="text-sm hover:text-amber-400" target="_blank">Ver Site</a>
+            </div>
+        </aside>
+
+        <main class="flex-1 p-8 overflow-y-auto">
+            <h2 class="text-3xl font-bold mb-6 text-gray-800"><%= title %></h2>
+            
+            <% if (success && success.length) { %>
+                <div class="bg-green-200 text-green-800 p-3 rounded mb-4"><%= success %></div>
+            <% } %>
+            <% if (error && error.length) { %>
+                <div class="bg-red-200 text-red-800 p-3 rounded mb-4"><%= error %></div>
+            <% } %>
+
+            <%- body %>
+        </main>
+    </div>
+</body>
+</html>

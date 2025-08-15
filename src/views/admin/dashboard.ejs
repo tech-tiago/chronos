@@ -1,0 +1,29 @@
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-lg font-semibold text-gray-700">Novos Usuários (Última Semana)</h3>
+        <p class="text-3xl font-bold text-blue-600"><%= stats.newUsers || 0 %></p>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-lg font-semibold text-gray-700">Tickets de Suporte Abertos</h3>
+        <p class="text-3xl font-bold text-red-600"><%= stats.openTickets || 0 %></p>
+    </div>
+    </div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-bold mb-4">Últimas Notícias</h3>
+        <ul>
+            <% (stats.latestNews || []).forEach(item => { %>
+                <li class="border-b py-2"><a href="/admin/noticias/<%= item.id %>/editar" class="text-blue-600 hover:underline"><%= item.titulo %></a></li>
+            <% }) %>
+        </ul>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-bold mb-4">Últimas Crônicas</h3>
+        <ul>
+            <% (stats.latestChronicles || []).forEach(item => { %>
+                <li class="border-b py-2"><%= item.titulo %></li>
+            <% }) %>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,104 @@
+<div class="lg:col-span-12 space-y-8">
+    <article class="ornate-panel overflow-hidden">
+        <img src="<%= newsItem.imagem_url || 'https://placehold.co/1200x500/0f172a/a78bfa.png' %>" class="w-full h-auto object-cover">
+        <div class="p-6 md:p-8">
+            <h1 class="font-fantasy text-4xl text-amber-400 mb-2"><%= newsItem.titulo %></h1>
+            <p class="text-sm text-slate-400 mb-6"><%= new Date(newsItem.data_publicacao).toLocaleString('pt-BR') %> — <%= newsItem.categoria || 'Geral' %></p>
+            
+            <div class="prose prose-invert max-w-none text-slate-300 leading-relaxed">
+                <%- newsItem.conteudo %>
+            </div>
+
+            <div class="mt-8 pt-4 border-t border-slate-700/50">
+                <form action="/like" method="POST">
+                    <input type="hidden" name="type" value="news">
+                    <input type="hidden" name="id" value="<%= newsItem.id %>">
+                    <button type="submit" class="flex items-center space-x-2 text-slate-400 hover:text-white transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="<%= newsItem.currentUserHasLiked ? 'fill-current text-red-500' : '' %>">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                        <span><%= newsItem.likeCount %> Curtidas</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </article>
+
+    <section class="ornate-panel">
+        <div class="ornate-header"><h3>Comentários</h3></div>
+        <div class="p-6 space-y-6">
+            <% if (currentUser) { %>
+                <form action="/noticias/<%= newsItem.id %>/comentar" method="POST">
+                    <textarea name="content" rows="4" class="w-full bg-slate-900/70 border border-slate-700 rounded p-3 text-sm focus:border-violet-500 focus:ring-violet-500 transition" placeholder="Deixe seu comentário..." required></textarea>
+                    <button type="submit" class="mt-2 bg-violet-700 hover:bg-violet-600 text-white font-bold py-2 px-4 rounded transition-colors duration-200">Enviar Comentário</button>
+                </form>
+            <% } else { %>
+                <p class="text-center text-slate-400">
+                    Você precisa <a href="/minha-conta/login" class="text-amber-400 font-bold hover:underline">fazer login</a> para deixar um comentário.
+                </p>
+            <% } %>
+
+            <hr class="border-slate-700/50">
+
+            <% const topLevelComments = (comments || []).filter(c => !c.parent_id); %>
+            <% if (topLevelComments.length > 0) { %>
+                <% topLevelComments.forEach(comment => { %>
+                    <div class="bg-slate-900/40 p-4 rounded-lg" id="comment-<%= comment.id %>">
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm text-slate-300">
+                                <strong class="text-white"><%= comment.username %></strong> — <span class="text-xs text-slate-500"><%= new Date(comment.created_at).toLocaleString('pt-BR') %></span>
+                            </p>
+                            <% if (currentUser && currentUser.role === 'admin') { %>
+                                <div class="flex space-x-2">
+                                    <% if (comment.status === 'pending') { %>
+                                        <form action="/admin/comentarios/<%= comment.id %>/aprovar" method="POST"><button class="text-xs bg-green-600 hover:bg-green-500 text-white px-2 py-1 rounded">Aprovar</button></form>
+                                    <% } %>
+                                    <form action="/admin/comentarios/<%= comment.id %>/deletar" method="POST"><button class="text-xs bg-red-600 hover:bg-red-500 text-white px-2 py-1 rounded">Deletar</button></form>
+                                </div>
+                            <% } %>
+                        </div>
+                        
+                        <p class="text-slate-200 py-2"><%= comment.content %></p>
+                        <% if (currentUser && currentUser.role === 'admin' && comment.status !== 'approved') { %>
+                            <span class="text-xs font-bold text-yellow-400">[Status: <%= comment.status %>]</span>
+                        <% } %>
+
+                        <div class="flex items-center space-x-4 mt-2 text-xs">
+                            <form action="/like" method="POST" class="inline">
+                                <input type="hidden" name="type" value="comment">
+                                <input type="hidden" name="id" value="<%= comment.id %>">
+                                <button type="submit" class="flex items-center space-x-1 <%= (comment.currentUserHasLiked) ? 'text-red-500' : 'text-slate-400' %> hover:text-white transition">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                    <span><%= comment.likeCount || 0 %></span>
+                                </button>
+                            </form>
+                            <button class="text-slate-400 hover:text-white" onclick="document.getElementById('form-reply-<%= comment.id %>').classList.toggle('hidden')">Responder</button>
+                        </div>
+                        
+                        <div class="hidden mt-4 ml-6 pl-4 border-l-2 border-slate-700" id="form-reply-<%= comment.id %>">
+                            <form action="/noticias/<%= newsItem.id %>/comentar" method="POST">
+                                <input type="hidden" name="parentId" value="<%= comment.id %>">
+                                <textarea name="content" rows="2" class="w-full bg-slate-800/70 border border-slate-600 rounded p-2 text-sm" placeholder="Escreva sua resposta..." required></textarea>
+                                <button type="submit" class="mt-2 bg-violet-700/80 hover:bg-violet-700 text-white font-bold py-1 px-3 rounded text-sm">Enviar Resposta</button>
+                            </form>
+                        </div>
+
+                        <% const replies = (comments || []).filter(r => r.parent_id === comment.id); %>
+                        <% if (replies.length > 0) { %>
+                            <div class="mt-4 ml-6 pl-4 border-l-2 border-slate-700 space-y-4">
+                                <% replies.forEach(reply => { %>
+                                    <div class="bg-slate-800/50 p-3 rounded" id="comment-<%= reply.id %>">
+                                        <p class="text-sm"><strong><%= reply.username %></strong> <span class="text-xs text-slate-500">em resposta a <%= comment.username %></span></p>
+                                        <p class="text-slate-300 py-1"><%= reply.content %></p>
+                                        </div>
+                                <% }) %>
+                            </div>
+                        <% } %>
+                    </div>
+                <% }) %>
+            <% } else if ((comments || []).length === 0) { %>
+                <p class="text-slate-400">Ainda não há comentários. Seja o primeiro a comentar!</p>
+            <% } %>
+        </div>
+    </section>
+</div>

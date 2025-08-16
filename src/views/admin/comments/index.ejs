@@ -1,0 +1,39 @@
+<div class="bg-white p-6 rounded-lg shadow-md">
+    <% if (comments && comments.length > 0) { %>
+        <table class="w-full text-left">
+            <thead>
+                <tr class="border-b">
+                    <th class="py-2 w-2/5">Comentário</th>
+                    <th class="py-2">Autor</th>
+                    <th class="py-2">Notícia Relacionada</th>
+                    <th class="py-2">Data</th>
+                    <th class="py-2 text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% comments.forEach(comment => { %>
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="py-3 text-sm text-gray-600"><%= comment.content %></td>
+                        <td class="py-3 font-semibold"><%= comment.author %></td>
+                        <td class="py-3">
+                            <a href="/noticias/<%= comment.news_id %>" class="text-blue-600 hover:underline" target="_blank">
+                                <%= comment.news_title %>
+                            </a>
+                        </td>
+                        <td class="py-3 text-sm"><%= new Date(comment.created_at).toLocaleDateString('pt-BR') %></td>
+                        <td class="py-3 flex justify-center items-center space-x-2">
+                            <form action="/admin/comentarios/<%= comment.id %>/aprovar" method="POST" class="inline">
+                                <button type="submit" class="bg-green-600 text-white text-xs py-1 px-3 rounded hover:bg-green-700">Aprovar</button>
+                            </form>
+                            <form action="/admin/comentarios/<%= comment.id %>/deletar" method="POST" class="inline">
+                                <button type="submit" class="bg-red-600 text-white text-xs py-1 px-3 rounded hover:bg-red-700">Deletar</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <p class="text-center text-gray-500 py-8">Não há comentários pendentes para moderação. Bom trabalho!</p>
+    <% } %>
+</div>

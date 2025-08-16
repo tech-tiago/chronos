@@ -1,27 +1,28 @@
-// Este middleware assume que você tem o model User com o método findById
 const User = require('../models/User');
+const NewsComment = require('../models/NewsComment'); // Importa o model
 
 module.exports = async function(req, res, next) {
-  // 1. Verifica se o usuário está logado
   if (!req.session.user || !req.session.user.id) {
     req.flash('error', 'Acesso negado. Por favor, faça login.');
     return res.redirect('/minha-conta/login');
   }
 
   try {
-    // 2. Busca o usuário completo no banco de dados para verificar sua 'role'
     const user = await User.findById(req.session.user.id);
     
-    // 3. Verifica se o usuário existe e se tem a role 'admin'
     if (user && user.role === 'admin') {
-      return next(); // Tudo certo, o usuário é admin, pode prosseguir
+      // Esta linha causa o erro se a função não existir no model
+      const pendingComments = await NewsComment.findAllPending();
+      res.locals.pendingCommentCount = pendingComments.length;
+      
+      return next();
     } else {
       req.flash('error', 'Acesso negado. Você não tem permissão de administrador.');
-      return res.redirect('/'); // Redireciona para a home do site principal
+      return res.redirect('/');
     }
   } catch (error) {
-    console.error("Erro no middleware ensureAdmin:", error);
-    req.flash('error', 'Ocorreu um erro ao verificar suas permissões.');
-    return res.redirect('/');
+    // Este catch agora irá capturar o erro que você está vendo
+    console.error("Erro no middleware ensureAdmin:", error); 
+    next(error); // Passa o erro para o error handler do Express
   }
 };

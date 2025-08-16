@@ -14,7 +14,18 @@
                 <ul>
                     <li class="mb-4"><a href="/admin" class="hover:text-amber-400">Dashboard</a></li>
                     <li class="mb-4"><a href="/admin/noticias" class="hover:text-amber-400">Notícias</a></li>
-                    <li class="mb-4"><a href="/admin/cronicas" class="hover:text-amber-400">Crônicas</a></li> <li class="mb-4"><a href="/admin/loja" class="hover:text-amber-400">Loja</a></li> <li class="mb-4"><a href="/admin/suporte" class="hover:text-amber-400">Suporte</a></li>
+                    <li class="mb-4"><a href="/admin/suporte" class="hover:text-amber-400">Suporte</a></li>
+
+                    <li class="mb-4">
+                        <a href="/admin/comentarios" class="hover:text-amber-400 flex items-center">
+                            Moderar Comentários
+                            <% if (typeof pendingCommentCount !== 'undefined' && pendingCommentCount > 0) { %>
+                                <span class="ml-2 bg-red-600 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+                                    <%= pendingCommentCount %>
+                                </span>
+                            <% } %>
+                        </a>
+                    </li>
                 </ul>
             </nav>
             <div class="absolute bottom-4">

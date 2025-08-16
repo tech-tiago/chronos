@@ -6,9 +6,11 @@ router.get('/', dashboardController.index);
 
 // Delega as rotas de cada módulo
 router.use('/noticias', require('./newsRoutes'));
-router.use('/cronicas', require('./chroniclesRoutes')); // Adicionar esta linha
-router.use('/loja', require('./shopRoutes')); // Adicionar esta linha
+router.use('/comentarios', require('./commentRoutes')); 
+router.use('/cronicas', require('./chroniclesRoutes')); 
+router.use('/loja', require('./shopRoutes')); 
 router.use('/suporte', require('./supportRoutes'));
+
 // Adicione aqui as rotas de crônicas, loja, galeria e usuários quando criá-las.
 // Ex: router.use('/loja', require('./shopRoutes'));
 

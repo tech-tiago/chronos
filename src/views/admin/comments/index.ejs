@@ -5,8 +5,8 @@
                 <tr class="border-b">
                     <th class="py-2 w-2/5">Comentário</th>
                     <th class="py-2">Autor</th>
-                    <th class="py-2">Notícia Relacionada</th>
-                    <th class="py-2">Data</th>
+                    <th class="py-2">Tipo</th> 
+                    <th class="py-2">Post Relacionado</th>
                     <th class="py-2 text-center">Ações</th>
                 </tr>
             </thead>
@@ -15,17 +15,27 @@
                     <tr class="border-b hover:bg-gray-50">
                         <td class="py-3 text-sm text-gray-600"><%= comment.content %></td>
                         <td class="py-3 font-semibold"><%= comment.author %></td>
+                        
                         <td class="py-3">
-                            <a href="/noticias/<%= comment.news_id %>" class="text-blue-600 hover:underline" target="_blank">
-                                <%= comment.news_title %>
+                            <% if (comment.type === 'news') { %>
+                                <span class="bg-blue-200 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Notícia</span>
+                            <% } else { %>
+                                <span class="bg-purple-200 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Comunidade</span>
+                            <% } %>
+                        </td>
+
+                        <td class="py-3">
+                            <a href="<%= comment.type === 'news' ? '/noticias' : '/comunidade' %>/<%= comment.post_id %>" class="text-blue-600 hover:underline" target="_blank">
+                                <%= comment.post_title %>
                             </a>
                         </td>
-                        <td class="py-3 text-sm"><%= new Date(comment.created_at).toLocaleDateString('pt-BR') %></td>
                         <td class="py-3 flex justify-center items-center space-x-2">
                             <form action="/admin/comentarios/<%= comment.id %>/aprovar" method="POST" class="inline">
+                                <input type="hidden" name="type" value="<%= comment.type %>">
                                 <button type="submit" class="bg-green-600 text-white text-xs py-1 px-3 rounded hover:bg-green-700">Aprovar</button>
                             </form>
                             <form action="/admin/comentarios/<%= comment.id %>/deletar" method="POST" class="inline">
+                                <input type="hidden" name="type" value="<%= comment.type %>">
                                 <button type="submit" class="bg-red-600 text-white text-xs py-1 px-3 rounded hover:bg-red-700">Deletar</button>
                             </form>
                         </td>

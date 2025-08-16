@@ -37,12 +37,12 @@ module.exports = {
 
   async findAllPending() {
     const [rows] = await db.query(`
-      SELECT nc.id, nc.content, nc.created_at, nc.news_id,
+      SELECT nc.id, nc.content, nc.created_at, nc.news_id as post_id,
              u.username as author,
-             n.titulo as news_title
+             n.titulo as post_title
       FROM news_comments nc
-      JOIN users u ON nc.user_id = u.id
-      JOIN news n ON nc.news_id = n.id
+      LEFT JOIN users u ON nc.user_id = u.id
+      LEFT JOIN news n ON nc.news_id = n.id
       WHERE nc.status = 'pending'
       ORDER BY nc.created_at ASC
     `);

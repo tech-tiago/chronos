@@ -1,0 +1,98 @@
+<div class="lg:col-span-12 space-y-8">
+    <article class="ornate-panel">
+        <div class="p-6 md:p-8">
+            <h1 class="font-fantasy text-4xl text-amber-400 mb-2"><%= post.titulo %></h1>
+            <p class="text-sm text-slate-400 mb-6">
+                Por <strong><%= post.autor %></strong> em <%= new Date(post.publicado_em).toLocaleString('pt-BR') %>
+            </p>
+            
+            <% if (post.imagem_url) { %>
+                <img src="<%= post.imagem_url %>" class="w-full h-auto object-cover rounded-lg my-6 shadow-lg">
+            <% } %>
+
+            <div class="prose prose-invert max-w-none text-slate-300 leading-relaxed">
+                <%- post.conteudo %>
+            </div>
+
+            <div class="mt-8 pt-4 border-t border-slate-700/50">
+                <form action="/like" method="POST">
+                    <input type="hidden" name="type" value="community_post">
+                    <input type="hidden" name="id" value="<%= post.id %>">
+                    <button type="submit" class="flex items-center space-x-2 text-slate-400 hover:text-white transition-colors duration-200 <%= post.currentUserHasLiked ? 'text-red-500' : '' %>">
+                        <svg class="w-5 h-5 <%= post.currentUserHasLiked ? 'fill-current' : '' %>" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                        <span><%= post.likeCount %> Curtidas</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </article>
+
+    <section class="ornate-panel">
+        <div class="ornate-header"><h3>Respostas</h3></div>
+        <div class="p-6 space-y-6">
+            <% if (currentUser) { %>
+                <form action="/comunidade/<%= post.id %>/comentar" method="POST">
+                    <textarea name="content" rows="4" class="w-full bg-slate-900/70 border border-slate-700 rounded p-3 text-sm focus:border-violet-500 focus:ring-violet-500 transition" placeholder="Deixe sua resposta..." required></textarea>
+                    <button type="submit" class="mt-2 bg-violet-700 hover:bg-violet-600 text-white font-bold py-2 px-4 rounded transition-colors duration-200">Enviar Resposta</button>
+                </form>
+            <% } else { %>
+                <p class="text-center text-slate-400">
+                    Você precisa <a href="/minha-conta/login" class="text-amber-400 font-bold hover:underline">fazer login</a> para responder a este tópico.
+                </p>
+            <% } %>
+
+            <hr class="border-slate-700/50">
+
+            <% const topLevelComments = (comments || []).filter(c => !c.parent_id); %>
+            <% if (topLevelComments.length > 0) { %>
+                <% topLevelComments.forEach(comment => { %>
+                    <div class="bg-slate-900/40 p-4 rounded-lg" id="comment-<%= comment.id %>">
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm text-slate-300">
+                                <strong class="text-white"><%= comment.username %></strong> — <span class="text-xs text-slate-500"><%= new Date(comment.created_at).toLocaleString('pt-BR') %></span>
+                            </p>
+                        </div>
+                        
+                        <p class="text-slate-200 py-2"><%= comment.mensagem %></p>
+
+                        <div class="flex items-center space-x-4 mt-2 text-xs">
+                            <form action="/like" method="POST" class="inline">
+                                <input type="hidden" name="type" value="community_comment">
+                                <input type="hidden" name="id" value="<%= comment.id %>">
+                                <button type="submit" class="flex items-center space-x-1 <%= (comment.currentUserHasLiked) ? 'text-red-500' : 'text-slate-400' %> hover:text-white transition">
+                                    <svg class="w-4 h-4 <%= comment.currentUserHasLiked ? 'fill-current' : '' %>" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                    <span><%= comment.likeCount || 0 %></span>
+                                </button>
+                            </form>
+                            <button class="text-slate-400 hover:text-white" onclick="document.getElementById('form-reply-<%= comment.id %>').classList.toggle('hidden')">Responder</button>
+                        </div>
+                        
+                        <div class="hidden mt-4 ml-6 pl-4 border-l-2 border-slate-700" id="form-reply-<%= comment.id %>">
+                            <form action="/comunidade/<%= post.id %>/comentar" method="POST">
+                                <input type="hidden" name="parentId" value="<%= comment.id %>">
+                                <textarea name="content" rows="2" class="w-full bg-slate-800/70 border border-slate-600 rounded p-2 text-sm" placeholder="Escreva sua resposta para <%= comment.username %>..." required></textarea>
+                                <button type="submit" class="mt-2 bg-violet-700/80 hover:bg-violet-700 text-white font-bold py-1 px-3 rounded text-sm">Enviar Resposta</button>
+                            </form>
+                        </div>
+
+                        <% const replies = (comments || []).filter(r => r.parent_id === comment.id); %>
+                        <% if (replies.length > 0) { %>
+                            <div class="mt-4 ml-6 pl-4 border-l-2 border-slate-700 space-y-4">
+                                <% replies.forEach(reply => { %>
+                                    <div class="bg-slate-800/50 p-3 rounded" id="comment-<%= reply.id %>">
+                                        <p class="text-sm"><strong><%= reply.username %></strong> <span class="text-xs text-slate-500">em resposta a <%= comment.username %></span></p>
+                                        <p class="text-slate-300 py-1"><%= reply.mensagem %></p>
+                                        </div>
+                                <% }) %>
+                            </div>
+                        <% } %>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p class="text-slate-400">Nenhuma resposta ainda. Seja o primeiro a participar da conversa!</p>
+            <% } %>
+        </div>
+    </section>
+</div>

@@ -11,10 +11,10 @@ router.post('/like', ensureAuth, async (req, res) => {
   const { type, id } = req.body;
   const userId = req.session.user.id;
 
-  if (!['news', 'comment'].includes(type) || !id) {
-    req.flash('error', 'Requisição inválida.');
-    return res.redirect('back');
-  }
+if (!['news', 'comment', 'community_post', 'community_comment'].includes(type) || !id) {
+  req.flash('error', 'Requisição inválida.');
+  return res.redirect('back');
+}
 
     try {
     await Like.toggle(userId, type, id);
